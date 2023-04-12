@@ -8,18 +8,26 @@ void pasarOrdenada(Pila *pila1, Pila *pila2);
 void ordenarSele(Pila *pila1);
 void insertarValor(Pila *pila1, Pila *pila2);
 void ordenarIns(Pila *pila1);
+int pilaValidos(Pila *pila1);
+int sumarPrimeros(Pila *pila1);
 int buscarMenor(Pila *pila1);
+int convertirPila(Pila *pila1);
+float sumarElementos(Pila *pila1);
+float dividirElementos(Pila *pila1);
+float calcularPromedio(Pila *pila1);
 
 int main()
 {
     int menor, val1;
+    float val2;
     Pila dada, aux;
     inicpila(&dada);
     inicpila(&aux);
     cargarPila(&dada);
     mostrar(&dada);
-    ordenarIns(&dada);
-    mostrar(&dada);
+    val1 = convertirPila(&dada);
+    printf("\nDADA: %d \n", val1);
+
 
 }
 
@@ -174,8 +182,97 @@ void ordenarIns(Pila *pila1)
 
     }
 
-    while(!pilavacia(&aux1)){
+    while(!pilavacia(&aux1))
+    {
         apilar(pila1, desapilar(&aux1));
     }
+}
+
+int sumarPrimeros(Pila *pila1)
+{
+    int suma = 0;
+    Pila aux;
+    inicpila(&aux);
+
+    apilar(&aux, desapilar(pila1));
+    suma = tope(&aux) + tope(pila1);
+
+    apilar(pila1, desapilar(&aux));
+
+    return suma;
+}
+
+/** Saber cuántos elementos tiene Pila*/
+int pilaValidos(Pila *pila1)
+{
+    Pila aux;
+    inicpila(&aux);
+    int i = 0;
+    while(!pilavacia(pila1))
+    {
+        apilar(&aux, desapilar(pila1));
+        i++;
+    }
+
+    return i;
+}
+
+float sumarElementos(Pila *pila1)
+{
+    Pila aux;
+    inicpila(&aux);
+    int suma=0;
+
+    while(!pilavacia(pila1))
+    {
+        suma = tope(pila1)+suma;
+        apilar(&aux, desapilar(pila1));
+    }
+    while(!pilavacia(&aux))
+    {
+        apilar(pila1, desapilar(&aux));
+    }
+
+    return suma;
+}
+
+float dividirElementos(Pila *pila1)
+{
+    float division = 0;
+    division = sumarElementos(pila1) / pilaValidos(pila1);
+
+    return division;
+}
+
+float calcularPromedio(Pila *pila1)
+{
+    float promedio = 0;
+    promedio = dividirElementos(pila1);
+
+    return promedio;
+}
+
+int convertirPila(Pila *pila1)
+{
+    Pila aux;
+    inicpila(&aux);
+    int res = 0;
+    int mult = 0;
+    int num = 0;
+    int i=1;
+    while(!pilavacia(pila1))
+    {
+        apilar(&aux, desapilar(pila1));
+    }
+    while(!pilavacia(&aux))
+    {
+        mult = tope(&aux) * i;
+        num = num + mult;
+        i = i * 10;
+        mult = 0;
+        apilar(pila1, desapilar(&aux));
+    }
+
+    return num;
 }
 
